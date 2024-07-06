@@ -1,0 +1,150 @@
+import axios from 'axios';
+import React, { useRef, useState } from 'react';
+import './DetectNumberPlate.css';
+// import AdminNavbar from './AdminNavbar';
+
+const DetectNumberPlate = () => {
+    const [imageSrc, setImageSrc] = useState(null);
+    const [file, setFile] = useState(null);
+    const [numberPlateText, setNumberPlateText] = useState('');
+    const [message, setMessage] = useState('');
+    const [recognized, setRecognized] = useState(null);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setImageSrc(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            setFile(file);
+        } else {
+            alert('Please select a JPEG or JPG file.');
+        }
+    };
+
+    const handleCancel = () => {
+        setImageSrc(null);
+        setFile(null);
+        setNumberPlateText('');
+        setMessage('');
+        setRecognized(null);
+    };
+
+    const handleExtractNumberPlate = () => {
+        if (!file) {
+            alert('Please upload an image first.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        axios.post('http://localhost:5000/api/extractNumberPlate', formData)
+            .then(response => {
+                setMessage(response.data.message);
+                setNumberPlateText(response.data.numberPlateText);
+                setRecognized(response.data.recognized);
+            })
+            .catch(error => {
+                console.error('Error extracting number plate:', error);
+                alert('Error extracting number plate. Please try again.');
+            });
+    };
+
+    const handleAddNumberPlate = () => {
+        if (!numberPlateText) {
+            alert('No number plate text to add.');
+            return;
+        }
+
+        axios.post('http://localhost:5000/api/addNumberPlate', { numberPlateText })
+            .then(response => {
+                setMessage(response.data.message);
+                setRecognized(true);
+            })
+            .catch(error => {
+                console.error('Error adding number plate:', error);
+                alert('Error adding number plate. Please try again.');
+            });
+    };
+
+    const handleOpenCamera = () => {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          setIsCameraOpen(true);
+          navigator.mediaDevices.getUserMedia({ video: true })
+              .then(stream => {
+                  videoRef.current.srcObject = stream;
+                  videoRef.current.play();
+              })
+              .catch(err => {
+                  console.error('Error accessing the camera:', err);
+                  setIsCameraOpen(false);
+              });
+      } else {
+          alert('Camera access is not supported by your browser.');
+      }
+  };
+
+    const handleCapture = () => {
+        const context = canvasRef.current.getContext('2d');
+        context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+        const imageData = canvasRef.current.toDataURL('image/jpeg');
+        setImageSrc(imageData);
+        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+        setIsCameraOpen(false);
+
+        // Convert data URL to a file
+        fetch(imageData)
+            .then(res => res.blob())
+            .then(blob => {
+                const file = new File([blob], 'captured.jpg', { type: 'image/jpeg' });
+                setFile(file);
+            });
+    };
+
+    return (
+        <div className="container">
+            {/* <AdminNavbar/> */}
+            <input type="file" accept="image/jpeg, image/jpg" onChange={handleFileChange} />
+            <button onClick={handleOpenCamera} className="camera-button">Open Camera</button>
+
+            {isCameraOpen && (
+                <div className="camera-container">
+                    <video ref={videoRef} className="video-feed"></video>
+                    <button onClick={handleCapture} className="capture-button">Capture</button>
+                </div>
+            )}
+
+            {imageSrc && (
+                <div className="image-container">
+                    <img src={imageSrc} alt="Uploaded number plate" className="uploaded-image" />
+                    <button onClick={handleCancel} className="cancel-button">Cancel</button>
+                    <button onClick={handleExtractNumberPlate} className="extract-button">Extract Number Plate</button>
+                </div>
+            )}
+            {message && (
+                <div className="message">
+                    <h2>{message}</h2>
+                    {recognized === false && (
+                        <button onClick={handleAddNumberPlate} className="add-button">Add Number Plate to Database</button>
+                    )}
+                </div>
+            )}
+            {numberPlateText && (
+                <div className="number-plate-text">
+                    <h2>Extracted Number Plate Text:</h2>
+                    <p>{numberPlateText}</p>
+                </div>
+            )}
+
+            <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480"></canvas>
+        </div>
+    );
+};
+
+export default DetectNumberPlate;

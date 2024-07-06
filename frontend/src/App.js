@@ -11,7 +11,7 @@ import AdmVisitorLogs from './components/Admin components/AdmVisitorLogs';
 import AllResInfo from './components/Admin components/AllResInfo';
 import PrivateRoute from './components/PrivateRoute';
 import Unauthorized from './components/Unauthorized';
-
+import DetectNumberPlate from './components/Admin components/DetectNumberPlate';
 
 function App() {
   return (
@@ -25,6 +25,8 @@ function App() {
         <Route path="/adminhome/admininfo" element={<PrivateRoute allowedRoles={['Admin']}><AdminInfo/></PrivateRoute>}/>
         <Route path="/adminhome/visitorlogs" element={<PrivateRoute allowedRoles={['Admin']}><AdmVisitorLogs/></PrivateRoute>}/>
         <Route path="/adminhome/allresinfo" element={<PrivateRoute allowedRoles={['Admin']}><AllResInfo/></PrivateRoute>}/>
+        <Route path="/adminhome/detectnumberplate" element={<PrivateRoute allowedRoles={['Admin']}><DetectNumberPlate/></PrivateRoute>}/>
+
 
         <Route path="/residenthome" element={<PrivateRoute allowedRoles={['Resident']}><ResidentHome/></PrivateRoute>}/>
         <Route path="/residenthome/personalinfo" element={<PrivateRoute allowedRoles={['Resident']}><PersonalInfo/></PrivateRoute>}/>
