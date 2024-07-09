@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(fileUpload());
 
-mongoose.connect('mongodb+srv://sricharankolachalama:Charan05@cluster101.qwrvkrr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster101', {
+mongoose.connect('mongodb+srv://sricharankolachalama:******@cluster101.qwrvkrr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster101', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
