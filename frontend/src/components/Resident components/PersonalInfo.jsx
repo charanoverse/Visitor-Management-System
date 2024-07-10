@@ -5,7 +5,7 @@ const PersonalInfo = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user')); // Retrieve user data from local storage
+    const userData = JSON.parse(localStorage.getItem('user')); 
     setUser(userData);
   }, []);
 

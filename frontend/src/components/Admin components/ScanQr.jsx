@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader'; // Import QrReader from react-qr-reader
+import QrScanner from 'react-qr-scanner';
 
 const ScanQr = () => {
-  const [result, setResult] = useState('');
-  const [openCamera, setOpenCamera] = useState(false); // State to toggle camera
+  const [data, setData] = useState('No result');
+  const [error, setError] = useState('');
 
-  const handleScan = (data) => {
-    if (data) {
-      setResult(data);
+  const handleScan = (result) => {
+    if (result) {
+      setData(result.text); // Extracting the text from the result object
+      setError(''); // Clear previous error
     }
   };
 
   const handleError = (err) => {
-    console.error(err);
+    console.error("QR Scanner Error: ", err);
+    setError('Error scanning QR code: ' + err.message);
   };
 
-  const toggleCamera = () => {
-    setOpenCamera(!openCamera);
+  const previewStyle = {
+    height: 240,
+    width: 320,
   };
 
   return (
-    <div>
-      <button onClick={toggleCamera} style={{ marginBottom: '10px' }}>
-        {openCamera ? 'Close Camera' : 'Open Camera'}
-      </button>
-      {openCamera && (
-        <QrReader
-          delay={300}
-          onError={handleError}
-          onScan={handleScan}
-          style={{ width: '100%' }}
-        />
-      )}
-      <p>{result}</p>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)', color: 'black' }}>
+      <h1>QR Code Scanner</h1>
+      <QrScanner
+        delay={300}
+        style={previewStyle}
+        onError={handleError}
+        onScan={handleScan}
+      />
+      <p>{data}</p>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };

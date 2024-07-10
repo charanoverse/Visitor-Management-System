@@ -74,21 +74,18 @@ const DetectNumberPlate = () => {
     };
 
     const handleOpenCamera = () => {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-          setIsCameraOpen(true);
-          navigator.mediaDevices.getUserMedia({ video: true })
-              .then(stream => {
-                  videoRef.current.srcObject = stream;
-                  videoRef.current.play();
-              })
-              .catch(err => {
-                  console.error('Error accessing the camera:', err);
-                  setIsCameraOpen(false);
-              });
-      } else {
-          alert('Camera access is not supported by your browser.');
-      }
-  };
+        setIsCameraOpen(true);
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            })
+            .catch(err => {
+                console.error('Error accessing the camera:', err);
+                setIsCameraOpen(false);
+            });
+    };
+
 
     const handleCapture = () => {
         const context = canvasRef.current.getContext('2d');
