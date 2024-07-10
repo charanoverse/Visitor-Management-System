@@ -22,12 +22,22 @@ const ScanQr = () => {
     width: 320,
   };
 
+  const videoConstraints = {
+    video: {
+      facingMode: "environment", // Use the rear camera on mobile devices
+      width: { ideal: 1280 },
+      height: { ideal: 720 }
+  },
+  audio: false
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)', color: 'black' }}>
       <h1>QR Code Scanner</h1>
       <QrScanner
         delay={300}
         style={previewStyle}
+        constraints={videoConstraints}
         onError={handleError}
         onScan={handleScan}
       />

@@ -40,11 +40,11 @@ const DetectNumberPlate = () => {
             alert('Please upload an image first.');
             return;
         }
-
+    
         const formData = new FormData();
         formData.append('file', file);
-
-        axios.post('http://localhost:5000/api/extractNumberPlate', formData)
+    
+        axios.post('http://localhost:5000/api/extractNumberPlate', formData)  // Replace localhost with your machine's IP
             .then(response => {
                 setMessage(response.data.message);
                 setNumberPlateText(response.data.numberPlateText);
@@ -55,6 +55,7 @@ const DetectNumberPlate = () => {
                 alert('Error extracting number plate. Please try again.');
             });
     };
+    
 
     const handleAddNumberPlate = () => {
         if (!numberPlateText) {
@@ -75,7 +76,16 @@ const DetectNumberPlate = () => {
 
     const handleOpenCamera = () => {
         setIsCameraOpen(true);
-        navigator.mediaDevices.getUserMedia({ video: true })
+        const constraints = {
+            video: {
+                facingMode: "environment", // Use the rear camera on mobile devices
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        };
+    
+        navigator.mediaDevices.getUserMedia(constraints)
             .then(stream => {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
@@ -83,9 +93,9 @@ const DetectNumberPlate = () => {
             .catch(err => {
                 console.error('Error accessing the camera:', err);
                 setIsCameraOpen(false);
+                alert('Error accessing the camera: ' + err.message);
             });
     };
-
 
     const handleCapture = () => {
         const context = canvasRef.current.getContext('2d');
