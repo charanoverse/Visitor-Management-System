@@ -1,8 +1,7 @@
-// models/User.js
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  name: {
+const userSchema = new mongoose.Schema({
+   name: {
     type: String,
     required: true,
   },
@@ -20,15 +19,12 @@ const UserSchema = new mongoose.Schema({
     enum: ['Admin', 'Resident'],
     default: 'Resident',
   },
-  mobileNumber: {
-    type: String,
-  },
-  flatNumber: {
-    type: String,
-  },
-  vehicleNumber: {
-    type: String,
-  },
+  flatNumber: String,
+  mobileNumber: String,
+  vehicles: [String],
+  familyMembers: [{ name: String }],
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

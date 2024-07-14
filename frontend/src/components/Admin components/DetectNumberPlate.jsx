@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './DetectNumberPlate.css';
-// import AdminNavbar from './AdminNavbar';
+// import AdminNabar from './AdminNavbar';
 
 const DetectNumberPlate = () => {
     const [imageSrc, setImageSrc] = useState(null);
@@ -13,38 +13,67 @@ const DetectNumberPlate = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImageSrc(e.target.result);
+    const handleOpenCamera = () => {
+        setIsCameraOpen(true);
+    };
+
+    useEffect(() => {
+        if (isCameraOpen && videoRef.current) {
+            const constraints = {
+                video: {
+                    facingMode: "environment",
+                    width: { ideal: 1280 },  // Adjust width for better resolution on different devices
+                    height: { ideal: 720 }   // Adjust height for better resolution on different devices
+                },
+                audio: false
             };
-            reader.readAsDataURL(file);
-            setFile(file);
-        } else {
-            alert('Please select a JPEG or JPG file.');
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                })
+                .catch(err => {
+                    console.error('Error accessing the camera:', err);
+                    setIsCameraOpen(false);
+                    alert('Error accessing the camera: ' + err.message);
+                });
+        }
+    }, [isCameraOpen]);
+
+    useEffect(() => {
+        if (isCameraOpen) {
+            const timer = setTimeout(() => {
+                handleCapture();
+            }, 5000); // Adjust the delay as needed (e.g., 3000ms = 3 seconds)
+            return () => clearTimeout(timer);
+        }
+    }, [isCameraOpen]);
+
+    const handleCapture = () => {
+        if (canvasRef.current && videoRef.current) {
+            const context = canvasRef.current.getContext('2d');
+            context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+            const imageData = canvasRef.current.toDataURL('image/jpeg');
+            setImageSrc(imageData);
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+            setIsCameraOpen(false);
+
+            fetch(imageData)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], 'captured.jpg', { type: 'image/jpeg' });
+                    setFile(file);
+                    handleExtractNumberPlate(file);
+                });
         }
     };
 
-    const handleCancel = () => {
-        setImageSrc(null);
-        setFile(null);
-        setNumberPlateText('');
-        setMessage('');
-        setRecognized(null);
-    };
-
-    const handleExtractNumberPlate = () => {
-        if (!file) {
-            alert('Please upload an image first.');
-            return;
-        }
-    
+    const handleExtractNumberPlate = (file) => {
         const formData = new FormData();
         formData.append('file', file);
-    
-        axios.post('http://localhost:5000/api/extractNumberPlate', formData)  // Replace localhost with your machine's IP
+
+        axios.post('http://localhost:5000/api/extractNumberPlate', formData)
             .then(response => {
                 setMessage(response.data.message);
                 setNumberPlateText(response.data.numberPlateText);
@@ -55,7 +84,6 @@ const DetectNumberPlate = () => {
                 alert('Error extracting number plate. Please try again.');
             });
     };
-    
 
     const handleAddNumberPlate = () => {
         if (!numberPlateText) {
@@ -74,64 +102,44 @@ const DetectNumberPlate = () => {
             });
     };
 
-    const handleOpenCamera = () => {
-        setIsCameraOpen(true);
-        const constraints = {
-            video: {
-                facingMode: "environment", // Use the rear camera on mobile devices
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            },
-            audio: false
-        };
-    
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then(stream => {
-                videoRef.current.srcObject = stream;
-                videoRef.current.play();
-            })
-            .catch(err => {
-                console.error('Error accessing the camera:', err);
-                setIsCameraOpen(false);
-                alert('Error accessing the camera: ' + err.message);
-            });
+    const handleCancel = () => {
+        setImageSrc(null);
+        setFile(null);
+        setNumberPlateText('');
+        setMessage('');
+        setRecognized(null);
     };
 
-    const handleCapture = () => {
-        const context = canvasRef.current.getContext('2d');
-        context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        const imageData = canvasRef.current.toDataURL('image/jpeg');
-        setImageSrc(imageData);
-        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-        setIsCameraOpen(false);
-
-        // Convert data URL to a file
-        fetch(imageData)
-            .then(res => res.blob())
-            .then(blob => {
-                const file = new File([blob], 'captured.jpg', { type: 'image/jpeg' });
-                setFile(file);
-            });
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setImageSrc(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            setFile(file);
+            handleExtractNumberPlate(file);
+        } else {
+            alert('Please select a JPEG or JPG file.');
+        }
     };
 
     return (
-        <div className="container">
-            {/* <AdminNavbar/> */}
+        <div className="container">           
             <input type="file" accept="image/jpeg, image/jpg" onChange={handleFileChange} />
             <button onClick={handleOpenCamera} className="camera-button">Open Camera</button>
 
             {isCameraOpen && (
                 <div className="camera-container">
                     <video ref={videoRef} className="video-feed"></video>
-                    <button onClick={handleCapture} className="capture-button">Capture</button>
                 </div>
             )}
 
             {imageSrc && (
                 <div className="image-container">
-                    <img src={imageSrc} alt="Uploaded number plate" className="uploaded-image" />
+                    <img src={imageSrc} alt="Captured number plate" className="uploaded-image" />
                     <button onClick={handleCancel} className="cancel-button">Cancel</button>
-                    <button onClick={handleExtractNumberPlate} className="extract-button">Extract Number Plate</button>
                 </div>
             )}
             {message && (
@@ -149,7 +157,7 @@ const DetectNumberPlate = () => {
                 </div>
             )}
 
-            <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480"></canvas>
+            <canvas ref={canvasRef} style={{ display: 'none' }} width="1280" height="720"></canvas>
         </div>
     );
 };

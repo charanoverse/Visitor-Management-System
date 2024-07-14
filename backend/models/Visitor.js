@@ -1,4 +1,3 @@
-// models/Visitor.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -7,7 +6,7 @@ const visitorSchema = new Schema({
     type: String,
     required: true,
   },
-  residentName:{
+  residentName: {
     type: String,
     required: true,
   },
@@ -31,6 +30,13 @@ const visitorSchema = new Schema({
     type: String,
     required: true,
   },
+  qrCode: {
+    type: String,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model('Visitor', visitorSchema);
+// Check if the model already exists before defining it
+const Visitor = mongoose.models.Visitor || mongoose.model('Visitor', visitorSchema);
+
+module.exports = Visitor;

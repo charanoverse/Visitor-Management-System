@@ -1,24 +1,24 @@
 import React from 'react';
-import './ResidentNavbar.css';
 import { useNavigate } from 'react-router-dom';
+import './ResidentNavbar.css';
 
 const ResidentNavbar = () => {
   const navigate = useNavigate();
 
   const handleSignout = () => {
-    localStorage.removeItem('user'); // Clear user data from local storage
-    navigate('/'); // Redirect to login page
+    localStorage.removeItem('user'); 
+    navigate('/');
   };
   return (
-    <div className="navbar"> 
+    <nav className="navbar">
+      <div className="reslogo">VMS</div>
       <ul className="navbar-links">
         <li><a href="/residenthome">Dashboard</a></li>
         <li><a href="/residenthome/visitorlogs">Visitor Logs</a></li>
         <li><a href="/residenthome/personalinfo">Personal Info</a></li>
-        <li><button onClick={handleSignout}>Sign Out</button></li>
       </ul>
-    </div>
+      <button onClick={handleSignout}>Sign Out</button>
+    </nav>
   );
 };
-
 export default ResidentNavbar;

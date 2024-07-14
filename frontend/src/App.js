@@ -10,11 +10,12 @@ import Loginsignup from './components/Loginsignup';
 import PrivateRoute from './components/PrivateRoute';
 import PersonalInfo from './components/Resident components/PersonalInfo';
 import ResidentHome from './components/Resident components/ResidentHome';
-import ResVisitorLogs from './components/Resident components/VisitorLogs';
+import ResVisitorLogs from './components/Resident components/ResVisitorLogs';
 import Unauthorized from './components/Unauthorized';
-import VisitorRegistrationForm from './components/Resident components/VisitorRegistrationForm';
+import ScheduleVisit from './components/Resident components/ScheduleVisit';
 import ScanQr from './components/Admin components/ScanQr';
 import RecognizeFace from './components/Admin components/RecognizeFace';
+import PreScheduledVisits from './components/Resident components/PreScheduledVisits';
 
 function App() {
 
@@ -37,7 +38,9 @@ function App() {
         <Route path="/residenthome" element={<PrivateRoute allowedRoles={['Resident']}><ResidentHome /></PrivateRoute>} />
         <Route path="/residenthome/personalinfo" element={<PrivateRoute allowedRoles={['Resident']}><PersonalInfo /></PrivateRoute>} />
         <Route path="/residenthome/visitorlogs" element={<PrivateRoute allowedRoles={['Resident']}><ResVisitorLogs /></PrivateRoute>} />
-        <Route path="/scheduleVisit" element={<PrivateRoute allowedRoles={['Resident']}><VisitorRegistrationForm /></PrivateRoute>} />
+        <Route path="/scheduleVisit" element={<PrivateRoute allowedRoles={['Resident']}><ScheduleVisit/></PrivateRoute>} />
+        <Route path="/prescheduledVisits" element={<PrivateRoute allowedRoles={['Resident']}><PreScheduledVisits/></PrivateRoute>} />
+
 
 
       </Routes>

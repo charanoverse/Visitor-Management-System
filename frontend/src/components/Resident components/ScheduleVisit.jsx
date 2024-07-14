@@ -1,9 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-//import './VisitorRegistrationForm.css';
-//import ResidentNavbar from './ResidentNavbar';
+// import ResidentNavbar from './ResidentNavbar';
 
-const VisitorRegistrationForm = () => {
+const ScheduleVisit = () => {
   const [visitorName, setVisitorName] = useState('');
   const [purpose, setPurpose] = useState('');
   const [relation, setRelation] = useState('');
@@ -54,7 +53,6 @@ const VisitorRegistrationForm = () => {
 
   return (
     <div>
-      {/* <ResidentNavbar/> */}
       <h1>Visitor Registration Form</h1>
       {successMessage && <p style={{ color: 'black' }}>{successMessage}</p>}
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
@@ -111,4 +109,4 @@ const VisitorRegistrationForm = () => {
   );
 };
 
-export default VisitorRegistrationForm;
+export default ScheduleVisit;
