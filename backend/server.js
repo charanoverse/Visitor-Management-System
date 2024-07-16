@@ -17,9 +17,6 @@ app.use(cors());
 app.use(fileUpload());
 
 mongoose.connect('mongodb+srv://sricharankolachalama:cherry05@cluster101.qwrvkrr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster101', {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-    // useFindAndModify: false, // To avoid deprecation warnings
 })
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.error('MongoDB connection error:', err));

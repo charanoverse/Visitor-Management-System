@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import QrScanner from 'react-qr-scanner';
 import axios from 'axios';
-// import AdminNavbar from './AdminNavbar';
+import AdminNavbar from './AdminNavbar';
 
 const ScanQr = () => {
   const [data, setData] = useState('No result');
@@ -72,8 +72,10 @@ const ScanQr = () => {
   };
 
   return (
+    <div className="sc-navbar">
+      <AdminNavbar/>
+      <div className="sc-body">
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)', color: 'black' }}>
-      {/* <AdminNavbar/> */}
       <h1>QR Code Scanner</h1>
       <QrScanner
         delay={300}
@@ -85,6 +87,8 @@ const ScanQr = () => {
       <p>{data}</p>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {message && <p style={{ color: 'green' }}>{message}</p>}
+    </div>
+    </div>
     </div>
   );
 };

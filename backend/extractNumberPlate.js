@@ -52,4 +52,4 @@ function extractNumberPlate(req, res) {
     });
 }
 
-module.exports = extractNumberPlate;
+module.exports = extractNumberPlate;    
