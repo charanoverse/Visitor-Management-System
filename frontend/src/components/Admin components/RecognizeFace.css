@@ -1,0 +1,36 @@
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .Face-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(180deg, #ff8800, #fbff00);
+  }
+  
+  .Face-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .Face-video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  

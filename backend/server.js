@@ -5,14 +5,18 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const QRCode = require('qrcode');
 const extractNumberPlate = require('./extractNumberPlate');
-const NumberPlate = require('./models/NumberPlate');
-const User = require('./models/User');
-const Visitor = require('./models/Visitor');
-const VerifiedLog = require('./models/VerifiedLog');
+const NumberPlate = require('./model/NumberPlate');
+const User = require('./model/User');
+const Visitor = require('./model/Visitor');
+const VerifiedLog = require('./model/VerifiedLog');
+const canvas = require('canvas');
+const faceapi = require('face-api.js');
+const path = require('path');
+const Faces = require('./model/Faces');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
 app.use(cors());
 app.use(fileUpload());
 
@@ -187,5 +191,73 @@ app.get('/api/visitorLogs', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Face detection endpoint
+const { Canvas, Image, ImageData } = canvas;
+faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+
+const loadModels = async () => {
+    const MODEL_URL = path.join(__dirname, 'models');
+    await faceapi.nets.ssdMobilenetv1.loadFromDisk(MODEL_URL);
+    await faceapi.nets.faceLandmark68Net.loadFromDisk(MODEL_URL);
+    await faceapi.nets.faceRecognitionNet.loadFromDisk(MODEL_URL);
+};
+
+loadModels().then(() => {
+    app.post('/api/detect', async (req, res) => {
+        const { image } = req.body;
+        try {
+            const newDetection = new Faces({ image });
+            await newDetection.save();
+            res.json({ message: 'Image stored successfully' });
+        } catch (error) {
+            console.error(`Database error: ${error}`);
+            res.status(500).send('Database error.');
+        }
+    });
+
+    // Face verification endpoint
+    app.post('/api/verify', async (req, res) => {
+        const { image } = req.body;
+        try {
+            const allFaces = await Faces.find();
+            if (!allFaces || allFaces.length === 0) {
+                return res.status(404).json({ verified: false, message: 'No faces found in the database' });
+            }
+            
+            // Convert stored images to face descriptors
+            const labeledDescriptors = await Promise.all(
+                allFaces.map(async (faceDoc) => {
+                    const imgBuffer = Buffer.from(faceDoc.image.split(',')[1], 'base64');
+                    const img = await canvas.loadImage(imgBuffer);
+                    const detections = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
+                    return new faceapi.LabeledFaceDescriptors(faceDoc._id.toString(), detections.map(det => det.descriptor));
+                })
+            );
+
+            const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
+
+            const imgBuffer = Buffer.from(image.split(',')[1], 'base64');
+            const img = await canvas.loadImage(imgBuffer);
+            const detections = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
+
+            if (detections.length === 0) {
+                return res.json({ verified: false, message: 'No face detected' });
+            }
+
+            const bestMatch = faceMatcher.findBestMatch(detections[0].descriptor);
+            if (bestMatch.label !== 'unknown') {
+                res.json({ verified: true, message: 'Face verified' });
+            } else {
+                res.json({ verified: false, message: 'Face not recognized' });
+            }
+        } catch (error) {
+            console.error(`Verification error: ${error}`);
+            res.status(500).send('Verification error.');
+        }
+    });
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).catch(err => {
+    console.error('Error loading models:', err);
+});
