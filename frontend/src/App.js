@@ -16,6 +16,7 @@ import ScheduleVisit from './components/Resident components/ScheduleVisit';
 import ScanQr from './components/Admin components/ScanQr';
 import RecognizeFace from './components/Admin components/RecognizeFace';
 import PreScheduledVisits from './components/Resident components/PreScheduledVisits';
+import RecognizeFace from './components/Admin components/RecognizeFace';
 
 function App() {
 
