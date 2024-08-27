@@ -112,7 +112,7 @@ const Loginsignup = () => {
         )}
       </div>
       {action === "Login" && (
-        <div className="forgot-password">Forgot Password?<span>Click Here!</span></div>
+        <div className="forgot-password"><span></span></div>
       )}
       <div className="submit-container">
   <div className={action === "Login" ? "submit gray" : "submit"} onClick={action === "Login" ? handleLogin : handleSignup}>

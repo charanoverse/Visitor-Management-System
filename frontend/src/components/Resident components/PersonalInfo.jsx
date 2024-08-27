@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ResidentNavbar from './ResidentNavbar.jsx';
+import './PersonalInfo.css';
 
 const PersonalInfo = () => {
   const [user, setUser] = useState(null);
@@ -84,8 +85,9 @@ const PersonalInfo = () => {
   return (
     <div>
       <ResidentNavbar />
+    <div className="personalinfocontainer">
       <h1>Profile Information</h1>
-      {message && <p>{message}</p>} {/* Display the success message */}
+      {message && <p className="message">{message}</p>} {/* Display the success message */}
       {!editing ? (
         <>
           <p><strong>Name:</strong> {user.name}</p>
@@ -97,7 +99,7 @@ const PersonalInfo = () => {
           <p><strong>Family Members:</strong> {user.familyMembers?.map((member, index) => (
             <span key={index}>{member.name}{index < user.familyMembers.length - 1 ? ', ' : ''}</span>
           ))}</p>
-          <button onClick={() => setEditing(true)}>Update Profile</button>
+          <button className="editbutton" onClick={() => setEditing(true)}>Update Profile</button>
         </>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -121,7 +123,7 @@ const PersonalInfo = () => {
             <label>Mobile Number:</label>
             <input type="text" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} />
           </div>
-          <div>
+          <div className="vehicleinput">
             <label>Vehicles:</label>
             {formData.vehicles.map((vehicle, index) => (
               <div key={index}>
@@ -132,9 +134,9 @@ const PersonalInfo = () => {
                 />
               </div>
             ))}
-            <button type="button" onClick={addVehicle}>Add Vehicle</button>
+            <button className="addbutton" type="button" onClick={addVehicle}>Add Vehicle</button>
           </div>
-          <div>
+          <div className="familymemberinput">
             <label>Family Members:</label>
             {formData.familyMembers.map((member, index) => (
               <div key={index}>
@@ -145,11 +147,12 @@ const PersonalInfo = () => {
                 />
               </div>
             ))}
-            <button type="button" onClick={addFamilyMember}>Add Family Member</button>
+            <button className="addbutton" type="button" onClick={addFamilyMember}>Add Family Member</button>
           </div>
-          <button type="submit">Save</button>
+          <button className="personalinfobutton" type="submit">Save</button>
         </form>
       )}
+    </div>
     </div>
   );
 }

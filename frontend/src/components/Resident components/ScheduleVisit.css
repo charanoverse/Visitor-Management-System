@@ -1,0 +1,72 @@
+/* ScheduleVisit.css */
+
+.schedulevisitcontainer {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .schedulevisitcontainer h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 25px;
+  }
+  
+  .schedulevisitcontainer form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .schedulevisitcontainer label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333333;
+  }
+  
+  .schedulevisitcontainer input[type="text"],
+  .schedulevisitcontainer input[type="date"],
+  .schedulevisitcontainer input[type="time"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .schedulevisitcontainer .schedulevisitbutton {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .schedulevisitcontainer .schedulevisitbutton:hover {
+    background-color: #218838;
+  }
+  
+  .schedulevisitcontainer .successmessage {
+    font-size: 16px;
+    color: #28a745;
+    margin-bottom: 15px;
+  }
+  
+  .schedulevisitcontainer .errormessage {
+    font-size: 16px;
+    color: red;
+    margin-bottom: 15px;
+  }
+  
+  .schedulevisitcontainer img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+  }
+  

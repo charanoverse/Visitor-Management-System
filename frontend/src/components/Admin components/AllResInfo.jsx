@@ -20,8 +20,10 @@ const Allresinfo = () => {
   }, []);
 
   return (
-    <div className="unique-container">
+    <div>
       <AdminNavbar className="unique-navbar"/>
+    <div className="unique-container">
+      
       <h1 className="unique-title">All Residents Information</h1>
       <table className="unique-table">
         <thead className="unique-thead">
@@ -43,6 +45,7 @@ const Allresinfo = () => {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };

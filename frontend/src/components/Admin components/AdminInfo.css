@@ -1,0 +1,32 @@
+/* PersonalInfo.css */
+
+.personalinfocontainer {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .personalinfoheader {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .personalinfodetails {
+    font-size: 18px;
+    color: #555555;
+  }
+  
+  .personalinfodetails p {
+    margin: 10px 0;
+  }
+  
+  .personalinfodetails p strong {
+    color: #000000;
+  }
+  

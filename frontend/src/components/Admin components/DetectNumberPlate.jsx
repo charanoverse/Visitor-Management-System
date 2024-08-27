@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import './DetectNumberPlate.css';
-// import AdminNabar from './AdminNavbar';
+import AdminNavbar from './AdminNavbar';
 
 const DetectNumberPlate = () => {
     const [imageSrc, setImageSrc] = useState(null);
@@ -22,8 +22,8 @@ const DetectNumberPlate = () => {
             const constraints = {
                 video: {
                     facingMode: "environment",
-                    width: { ideal: 1280 },  // Adjust width for better resolution on different devices
-                    height: { ideal: 720 }   // Adjust height for better resolution on different devices
+                    width: { ideal: 640 },  // Lower resolution
+                    height: { ideal: 480 }  // Lower resolution
                 },
                 audio: false
             };
@@ -45,7 +45,7 @@ const DetectNumberPlate = () => {
         if (isCameraOpen) {
             const timer = setTimeout(() => {
                 handleCapture();
-            }, 5000); // Adjust the delay as needed (e.g., 3000ms = 3 seconds)
+            }, 5000);
             return () => clearTimeout(timer);
         }
     }, [isCameraOpen]);
@@ -126,7 +126,9 @@ const DetectNumberPlate = () => {
     };
 
     return (
-        <div className="container">           
+        <div>
+            <AdminNavbar/>
+        <div className="container">
             <input type="file" accept="image/jpeg, image/jpg" onChange={handleFileChange} />
             <button onClick={handleOpenCamera} className="camera-button">Open Camera</button>
 
@@ -157,7 +159,8 @@ const DetectNumberPlate = () => {
                 </div>
             )}
 
-            <canvas ref={canvasRef} style={{ display: 'none' }} width="1280" height="720"></canvas>
+            <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480"></canvas>
+        </div>
         </div>
     );
 };

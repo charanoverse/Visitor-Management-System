@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const Image = require('../models/Image');
+const Image = require('../model/Image');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });

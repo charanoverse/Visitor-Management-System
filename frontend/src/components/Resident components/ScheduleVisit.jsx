@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-// import ResidentNavbar from './ResidentNavbar';
+import ResidentNavbar from './ResidentNavbar';
+import './ScheduleVisit.css';
 
 const ScheduleVisit = () => {
   const [visitorName, setVisitorName] = useState('');
@@ -31,11 +32,8 @@ const ScheduleVisit = () => {
       time,
     };
 
-    console.log('Submitting:', visitDetails);
-
     axios.post('http://localhost:5000/api/visitor-registration', visitDetails)
       .then((response) => {
-        console.log('Response:', response.data);
         setSuccessMessage('Visitor registered successfully!');
         setQrCode(response.data.qrCode);
         setErrorMessage('');
@@ -46,16 +44,17 @@ const ScheduleVisit = () => {
         setTime('');
       })
       .catch((error) => {
-        console.error('There was an error scheduling the visit!', error);
         setErrorMessage('There was an error scheduling the visit. Please try again.');
       });
   };
 
   return (
     <div>
+      <ResidentNavbar/>
+    <div className="schedulevisitcontainer">
       <h1>Visitor Registration Form</h1>
-      {successMessage && <p style={{ color: 'black' }}>{successMessage}</p>}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {successMessage && <p className="successmessage">{successMessage}</p>}
+      {errorMessage && <p className="errormessage">{errorMessage}</p>}
       {qrCode && <img src={qrCode} alt="QR Code" />}
       <form onSubmit={handleSubmit}>
         <div>
@@ -103,8 +102,9 @@ const ScheduleVisit = () => {
             required
           />
         </div>
-        <button type="submit">Submit</button>
+        <button className="schedulevisitbutton" type="submit">Submit</button>
       </form>
+    </div>
     </div>
   );
 };

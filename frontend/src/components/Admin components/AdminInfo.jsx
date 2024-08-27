@@ -1,5 +1,6 @@
 import AdminNavbar from './AdminNavbar'
 import React, { useEffect, useState } from 'react';
+import './AdminInfo.css';
 
 const PersonalInfo = () => {
   const [user, setUser] = useState(null);
@@ -15,13 +16,17 @@ const PersonalInfo = () => {
 
   return (
     <div>
-      <AdminNavbar/>
-      <h1>Profile Information</h1>
-      <p><strong>Name:</strong> {user.name}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Role:</strong> {user.role}</p>
+      <AdminNavbar />
+    <div className="personalinfocontainer">
+      <h1 className="personalinfoheader">Profile Information</h1>
+      <div className="personalinfodetails">
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Role:</strong> {user.role}</p>
+      </div>
+    </div>
     </div>
   )
 }
 
-export default PersonalInfo
+export default PersonalInfo;

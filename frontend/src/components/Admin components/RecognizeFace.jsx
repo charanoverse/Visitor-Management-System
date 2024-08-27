@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as faceapi from 'face-api.js';
 import axios from 'axios';
+import * as faceapi from 'face-api.js';
+import React, { useEffect, useRef, useState } from 'react';
+import AdminNavbar from './AdminNavbar';
 import './RecognizeFace.css';
 
 const FaceRecognition = () => {
@@ -117,6 +118,7 @@ const FaceRecognition = () => {
   };
 
   return (
+    <div><AdminNavbar/>
     <div className="Face-container">
       <h1>Face Recognition</h1>
       {initializing ? (
@@ -144,6 +146,7 @@ const FaceRecognition = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

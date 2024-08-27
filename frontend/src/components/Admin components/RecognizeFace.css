@@ -9,7 +9,7 @@ body, html {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(180deg, #ff8800, #fbff00);
+    background: linear-gradient(360deg, #09e535, #fffeea, orange);
   }
   
   .Face-button-container {

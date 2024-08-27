@@ -1,6 +1,6 @@
 // routes/admin.js
 const express = require('express');
-const User = require('../models/User');
+const User = require('../model/User');
 
 const router = express.Router();
 

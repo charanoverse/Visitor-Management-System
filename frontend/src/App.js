@@ -5,18 +5,19 @@ import AdminHome from './components/Admin components/AdminHome';
 import AdminInfo from './components/Admin components/AdminInfo';
 import AdmVisitorLogs from './components/Admin components/AdmVisitorLogs';
 import AllResInfo from './components/Admin components/AllResInfo';
+import ApproveManually from './components/Admin components/ApproveManually';
 import DetectNumberPlate from './components/Admin components/DetectNumberPlate';
+import RecognizeFace from './components/Admin components/RecognizeFace';
+import ScanQr from './components/Admin components/ScanQr';
 import Loginsignup from './components/Loginsignup';
 import PrivateRoute from './components/PrivateRoute';
 import PersonalInfo from './components/Resident components/PersonalInfo';
+import PreScheduledVisits from './components/Resident components/PreScheduledVisits';
 import ResidentHome from './components/Resident components/ResidentHome';
 import ResVisitorLogs from './components/Resident components/ResVisitorLogs';
-import Unauthorized from './components/Unauthorized';
 import ScheduleVisit from './components/Resident components/ScheduleVisit';
-import ScanQr from './components/Admin components/ScanQr';
-import RecognizeFace from './components/Admin components/RecognizeFace';
-import PreScheduledVisits from './components/Resident components/PreScheduledVisits';
-import RecognizeFace from './components/Admin components/RecognizeFace';
+import Unauthorized from './components/Unauthorized';
+
 
 function App() {
 
@@ -26,6 +27,8 @@ function App() {
         <Route path="/" element={<Loginsignup />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+
 
         <Route path="/adminhome" element={<PrivateRoute allowedRoles={['Admin']}><AdminHome /></PrivateRoute>} />
         <Route path="/adminhome/admininfo" element={<PrivateRoute allowedRoles={['Admin']}><AdminInfo /></PrivateRoute>} />
@@ -34,6 +37,8 @@ function App() {
         <Route path="/adminhome/detectnumberplate" element={<PrivateRoute allowedRoles={['Admin']}><DetectNumberPlate /></PrivateRoute>} />
         <Route path="/adminhome/scanqrcode" element={<PrivateRoute allowedRoles={['Admin']}><ScanQr /></PrivateRoute>} />
         <Route path="/adminhome/recognizeface" element={<PrivateRoute allowedRoles={['Admin']}><RecognizeFace/></PrivateRoute>}/>
+        <Route path="/adminhome/approvemanually" element={<PrivateRoute allowedRoles={['Admin']}><ApproveManually/></PrivateRoute>}/>
+        
 
 
         <Route path="/residenthome" element={<PrivateRoute allowedRoles={['Resident']}><ResidentHome /></PrivateRoute>} />

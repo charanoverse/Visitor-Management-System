@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const NumberPlate = require('./models/NumberPlate'); // Import the NumberPlate model
+const NumberPlate = require('./model/NumberPlate'); // Import the NumberPlate model
 
 function extractNumberPlate(req, res) {
     if (!req.files || Object.keys(req.files).length === 0) {
