@@ -2,11 +2,22 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 175px;
+    margin-top: 95px;
     width: 500px;
-    background: #67c3d5;
+    background: #54855b;
     padding-bottom: 30px;
 
+}
+
+.heading{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 60px; 
+    margin-top: 85px;
+    /* font-style: italic; */
+    /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+    
 }
 
  .header{
@@ -19,7 +30,7 @@
 }
 
 .text{
-    color: #3c009d;
+    color: #113f8d;
     font-size: 30px; 
     font-weight: 700;
 }
@@ -27,7 +38,7 @@
 .underline{
     width: 30px;
     height: 4px;
-    background: #3c009d;
+    background: #113f8d;
     border-radius: 8px;
 }
 
@@ -60,18 +71,6 @@
     outline: none;
     color: #797979;
     font-size: 16px;
-}
-
-.forgot-password{
-    padding-left: 80px;
-    margin-top: 20px;
-    color: #797979;
-    font-size: 14px;
-}
-
-.forgot-password span{
-    color: #4c00b4;
-    cursor: pointer;
 }
 
 .submit-container{

@@ -53,6 +53,8 @@ const Loginsignup = () => {
   };
 
   return (
+    <div className="heading">
+      <h1>VISITOR MANAGEMENT SYSTEM</h1>
     <div className='container'>
       <div className="header">
         <div className="text">{action}</div>
@@ -122,6 +124,7 @@ const Loginsignup = () => {
     {action === "Sign Up" ? "Already have an account? Login" : " Don't have an account? Sign Up"}
   </div>
 </div>
+    </div>
     </div>
   );
 };
